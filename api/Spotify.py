@@ -8,7 +8,7 @@ import webbrowser
 class Spotify:
     token = ""
     auth_uri = ""
-
+    
     # TODO: write function to check it token is still valid, if not get referesh_token
 
     def __init__(self):
