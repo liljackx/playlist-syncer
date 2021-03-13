@@ -48,7 +48,8 @@ class Deezer:
     # Fetch a playlist from it's URI
     def fetch_playlist(self, playlists_uri=None):
         if playlists_uri is not None:
-            current_playlist_id = playlists_uri.split("en/")[1]
+            playlists_uri = requests.get(playlists_uri, allow_redirects=True).history[-1].url
+            current_playlist_id = playlists_uri.split("com/")[1].split("?utm")[0]
             response = requests.get(self.base_api.format(current_playlist_id))
             return response.json()
         else:

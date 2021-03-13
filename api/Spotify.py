@@ -12,6 +12,7 @@ class Spotify:
     # TODO: write function to check it token is still valid, if not get referesh_token
 
     def __init__(self):
+        self.base_api = "https://api.spotify.com/v1/{}"
         self.token_uri = "https://accounts.spotify.com/api/token"
         self.auth_uri = f"https://accounts.spotify.com/authorize?response_type=code&client_id={SPOTIFY_CLIENT_ID}&scope=user-read-private user-read-email&redirect_uri={SPOTIFY_REDIRECT_URI}"
         self.__authenticate()
@@ -46,5 +47,14 @@ class Spotify:
             code = self.__get_code()
             token = self.__get_token(code)
             self.__write_local_perms(token)
+
+    def fetch_playlist(self, playlists_uri=None):
+        if playlists_uri:
+            playlist_id = playlists_uri.split("playlist/")[1].split("?si")[0]
+            headers = {"Authorization": f"Bearer {self.token}"}
+            response = requests.get(self.base_api.format(f"playlists/{playlist_id}"), headers=headers).json()
+            return response
+        else:
+            raise Exception("Invalid spotify's playlist URI")
 
 s = Spotify()
