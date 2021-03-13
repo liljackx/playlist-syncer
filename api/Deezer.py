@@ -17,7 +17,7 @@ class Deezer:
     base_uri = ""
 
     def __init__(self):
-        self.auth_uri = f"https://connect.deezer.com/oauth/auth.php?app_id={DEEZER_APP_ID}&redirect_uri={DEEZ_REDIRECT_URI}&perms=basic_access,email&resopnse_type=token"
+        self.auth_uri = f"https://connect.deezer.com/oauth/auth.php?app_id={DEEZER_APP_ID}&redirect_uri={DEEZ_REDIRECT_URI}&perms=basic_access,email,manage_library&resopnse_type=token"
         self.base_api = "https://api.deezer.com/{}"
         self.__get_token()
 
@@ -55,3 +55,13 @@ class Deezer:
         else:
             raise Exception("Invalid playlists URI")
     
+    def add_track_to_playlist(self, track_ids, playlist_id):
+        if playlist_id and track_ids:
+            payload = {"track": track_ids}
+            response = requests.post(f"https://api.deezer.com/playlist/{playlist_id}/tracks", data=payload).json()
+            print(response)
+        else:
+            raise Exception("An error occurred, you did not provided either track_id or playlist_uri")
+
+d = Deezer()
+d.add_track_to_playlist([451032202], 8832096362)
